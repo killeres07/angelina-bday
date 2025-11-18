@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday, Angelina (Esha)! 🎉</title>
+<style>
+    body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(to bottom right, #ffeef5, #fff7e6);
+        padding: 20px;
+    }
+
+    .card {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        position: relative;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #ff6b9a, #ffb86b);
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-left: 15px;
+        color: #333;
+    }
+
+    .subtitle {
+        margin-left: 15px;
+        color: #777;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+    }
+
+    .box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        text-align: center;
+        font-size: 18px;
+    }
+
+    button {
+        padding: 12px 22px;
+        font-size: 16px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-right: 10px;
+        margin-top: 10px;
+    }
+
+    .openBtn {
+        background: linear-gradient(135deg, #ff6b9a, #ffb86b);
+        color: white;
+    }
+
+    .dmBtn {
+        background: #ffe1ec;
+        color: #ff6b9a;
+    }
+
+    /* MODAL */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modalContent {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        max-width: 600px;
+        font-size: 18px;
+        line-height: 1.5;
+        animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+        from { transform: scale(0.7); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="header">
+        <div class="avatar">AE</div>
+        <div>
+            <div class="title">Happy Birthday, Angelina (Esha)! 🎈</div>
+            <div class="subtitle">A tiny secret made with a lot of heart — from Spandan</div>
+        </div>
+    </div>
+
+    <div class="box">
+        Click **"Open your surprise"** when you're ready —  
+        I promise it's just for you.
+
+        <br><br>
+
+        <button class="openBtn" onclick="openSurprise()">Open your surprise 🥰</button>
+        <button class="dmBtn" onclick="copyDM()">Copy a sweet DM 💌</button>
+
+        <p style="color:#777; font-size:14px; margin-top:10px;">
+            Tip: After opening, tap anywhere pretty to see tiny hearts & confetti ✨
+        </p>
+    </div>
+</div>
+
+<!-- SURPRISE MODAL -->
+<div id="surpriseModal" class="modal" style="display:none;">
+    <div class="modalContent">
+        <h2>🎉 Happy Birthday, Angelina ❤️</h2>
+        <p>
+            I know you don’t like a lot of attention…  
+            but you deserve something a little special today.
+        </p>
+        <p>
+            So here it is — a tiny soft corner from me to you.  
+            You're genuinely one of the sweetest parts of my days,  
+            and I hope this year brings you everything beautiful.
+        </p>
+        <p>
+            Enjoy your day, Esha… you deserve every bit of happiness.  
+            — <b>Spandan</b> 💛
+        </p>
+        <br>
+        <button onclick="closeSurprise()" class="dmBtn">Close</button>
+    </div>
+</div>
+
+<script>
+function openSurprise() {
+    document.getElementById("surpriseModal").style.display = "flex";
+}
+
+function closeSurprise() {
+    document.getElementById("surpriseModal").style.display = "none";
+}
+
+function copyDM() {
+    const text = "Happy Birthday, Angelina 💛 Wanted to send you something a little extra today… open this 😊";
+    navigator.clipboard.writeText(text);
+    alert("DM copied! Paste it to her 💌");
+}
+</script>
+
+</body>
+</html>
