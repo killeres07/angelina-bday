@@ -30,7 +30,6 @@
       overflow:hidden;
     }
 
-    /* blurred photo layer */
     #bgPhoto{
       position:fixed;
       inset:0;
@@ -48,7 +47,6 @@
       filter:blur(6px) brightness(.85);
     }
 
-    /* confetti */
     #confetti{
       position:fixed;
       inset:0;
@@ -69,7 +67,6 @@
       100%{transform:translate3d(calc(var(--x) + 40px),110%,0) rotateZ(360deg);opacity:0}
     }
 
-    /* main card */
     .card{
       position:relative;
       z-index:1;
@@ -183,7 +180,6 @@
       margin-top:6px;
     }
 
-    /* right side */
     .right-card{
       background:#fffdfc;
       border-radius:22px;
@@ -233,7 +229,6 @@
       margin-top:4px;
     }
 
-    /* modal */
     .modal-backdrop{
       position:fixed;
       inset:0;
@@ -361,7 +356,6 @@
     </section>
   </div>
 
-  <!-- Modal -->
   <div class="modal-backdrop" id="modal">
     <div class="modal">
       <h2>Hey, birthday girl 💫</h2>
@@ -387,14 +381,12 @@
     </div>
   </div>
 
-  <!-- audio -->
   <audio id="bgMusic" loop></audio>
 
   <script>
-    /* your media links */
-    const PHOTO_BG   = "https://github.com/killeres07/angelina-bday/blob/main/Esha1.jpg?raw=true";
-    const PHOTO_THUMB= "https://github.com/killeres07/angelina-bday/blob/main/Esha2.jpg?raw=true";
-    const SONG       = "https://github.com/killeres07/angelina-bday/raw/main/Humdum__Aditya_Rikhari__Karaoke_With_Lyrics__Sallo_Beats__iMibEHC7HOI.mp3";
+    const PHOTO_BG   = "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Esha1.jpg";
+    const PHOTO_THUMB= "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Esha2.jpg";
+    const SONG       = "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Humdum__Aditya_Rikhari__Karaoke_With_Lyrics__Sallo_Beats__iMibEHC7HOI.mp3";
 
     const bgPhoto   = document.getElementById("bgPhoto");
     const thumbImg  = document.getElementById("thumbPhoto");
@@ -405,7 +397,6 @@
     const confettiC = document.getElementById("confetti");
     const music     = document.getElementById("bgMusic");
 
-    // set images + music src
     bgPhoto.style.backgroundImage = `url("${PHOTO_BG}")`;
     thumbImg.src = PHOTO_THUMB;
     music.src = SONG;
@@ -427,7 +418,6 @@
       modal.classList.add("show");
       bgPhoto.classList.add("on");
       makeConfetti();
-      // try to play music (user-gesture, so allowed)
       music.play().catch(()=>{});
     }
 
