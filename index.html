@@ -1,241 +1,456 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Happy Birthday, Angelina (Esha)! ❤️</title>
-<style>
-  :root{
-    --deep-red1:#3b0005;
-    --deep-red2:#8b0010;
-    --accent1:#ff3b57;
-    --accent2:#ff8a5c;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    min-height:100vh;
-    margin:0;
-    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-    background:radial-gradient(circle at top, var(--deep-red2), var(--deep-red1));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    color:#111;
-    overflow:hidden;
-  }
-  #bgPhoto{
-    position:fixed;
-    inset:0;
-    background-size:cover;
-    background-position:center;
-    filter:blur(10px) brightness(0.4);
-    opacity:0.75;
-    z-index:-1;
-    transform:scale(1.07);
-  }
-  .overlay{
-    position:fixed;inset:0;
-    background:radial-gradient(circle at top, rgba(255,255,255,0.14), transparent);
-    mix-blend-mode:screen;
-    z-index:-1;
-  }
-  .card{
-    width:100%;
-    max-width:900px;
-    background:rgba(255,255,255,0.96);
-    border-radius:22px;
-    padding:22px 22px 26px;
-    box-shadow:0 26px 80px rgba(0,0,0,0.45);
-    display:grid;
-    grid-template-columns:minmax(0,2.2fr) minmax(0,1.6fr);
-    gap:20px;
-  }
-  @media (max-width:780px){
-    .card{grid-template-columns:1fr}
-  }
-  .title{
-    font-size:28px;
-    font-weight:900;
-    margin-bottom:6px;
-  }
-  .subtitle{
-    font-size:14px;
-    color:#666;
-    margin-bottom:18px;
-  }
-  .msg{
-    font-size:17px;
-    line-height:1.6;
-    margin-bottom:16px;
-  }
-  .btn{
-    padding:10px 18px;
-    border-radius:999px;
-    border:none;
-    cursor:pointer;
-    font-weight:700;
-    font-size:15px;
-  }
-  .btn-main{
-    background:linear-gradient(90deg,var(--accent1),var(--accent2));
-    color:#fff;
-    box-shadow:0 10px 30px rgba(0,0,0,0.25);
-  }
-  .btn-ghost{
-    background:transparent;
-    border:1px solid rgba(0,0,0,0.12);
-    color:#c0183c;
-    margin-left:6px;
-  }
-  .thumb-wrap{
-    background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,245,245,0.9));
-    border-radius:18px;
-    padding:10px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-  }
-  .thumb{
-    width:100%;
-    border-radius:14px;
-    max-height:320px;
-    object-fit:cover;
-    display:block;
-  }
-  .thumb-caption{
-    font-size:13px;
-    color:#555;
-    margin-top:8px;
-  }
-  /* simple overlay popup */
-  .popup-backdrop{
-    position:fixed;inset:0;
-    background:rgba(0,0,0,0.6);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
-    z-index:10;
-  }
-  .popup{
-    background:white;
-    max-width:520px;
-    width:100%;
-    border-radius:18px;
-    padding:20px 20px 18px;
-    box-shadow:0 26px 80px rgba(0,0,0,0.55);
-    animation:pop .3s ease-out;
-  }
-  @keyframes pop{
-    from{transform:translateY(12px) scale(.96);opacity:0}
-    to{transform:translateY(0) scale(1);opacity:1}
-  }
-  .popup h2{margin-bottom:10px;font-size:22px}
-  .popup p{font-size:15px;line-height:1.6;margin-bottom:4px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Angelina (Esha)! ❤️</title>
+
+  <style>
+    :root{
+      --deep-red1:#3b0005;
+      --deep-red2:#8b0010;
+      --accent1:#ffb357;
+      --accent2:#ff8a5c;
+      --card:#ffffff;
+      --muted:#a7a7a7;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      min-height:100vh;
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top, var(--deep-red2), var(--deep-red1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      color:#111;
+      overflow:hidden;
+    }
+
+    /* blurred photo layer */
+    #bgPhoto{
+      position:fixed;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      filter:blur(10px) brightness(.7);
+      opacity:.18;
+      z-index:0;
+      transform:scale(1.05);
+      transition:opacity .6s ease, filter .6s ease;
+    }
+
+    #bgPhoto.on {
+      opacity:.32;
+      filter:blur(6px) brightness(.85);
+    }
+
+    /* confetti */
+    #confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:2;
+    }
+    .confetto{
+      position:absolute;
+      width:8px;
+      height:16px;
+      border-radius:3px;
+      opacity:0;
+      animation:fall 2.8s linear forwards;
+    }
+    @keyframes fall{
+      0%{transform:translate3d(var(--x),-10%,0) rotateZ(0deg);opacity:1}
+      100%{transform:translate3d(calc(var(--x) + 40px),110%,0) rotateZ(360deg);opacity:0}
+    }
+
+    /* main card */
+    .card{
+      position:relative;
+      z-index:1;
+      max-width:1050px;
+      width:100%;
+      background:linear-gradient(145deg,#ffffff,#fff7f4);
+      box-shadow:0 26px 60px rgba(0,0,0,.38);
+      border-radius:26px;
+      padding:32px 34px;
+      display:grid;
+      grid-template-columns: minmax(0,2.1fr) minmax(0,2fr);
+      gap:32px;
+    }
+
+    .badge-bar{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:-48px;
+      background:linear-gradient(120deg,#ffb357,#ff7f7f);
+      color:#fff;
+      padding:10px 22px;
+      border-radius:999px;
+      font-size:.88rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:0 14px 40px rgba(0,0,0,.45);
+      letter-spacing:.02em;
+    }
+
+    .badge-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#fffbf5;
+      box-shadow:0 0 0 4px rgba(255,255,255,.35);
+    }
+
+    .left h1{
+      font-size:2.1rem;
+      line-height:1.2;
+      margin-bottom:8px;
+    }
+
+    .left h1 span{color:#ff5b5b}
+
+    .left .tagline{
+      font-size:.9rem;
+      color:#666;
+      margin-bottom:22px;
+    }
+
+    .left p{
+      font-size:.98rem;
+      line-height:1.7;
+      color:#333;
+      margin-bottom:15px;
+    }
+
+    .left p span.strong{font-weight:600;color:#111}
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:14px;
+      margin-bottom:4px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:11px 20px;
+      font-size:.95rem;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      letter-spacing:.01em;
+      transition:transform .12s ease, box-shadow .12s ease, background .2s ease;
+    }
+
+    .btn-main{
+      background:linear-gradient(135deg,#ff7b5b,#ffb457);
+      color:#fff;
+      box-shadow:0 12px 24px rgba(0,0,0,.3);
+    }
+    .btn-main:hover{
+      transform:translateY(-1px);
+      box-shadow:0 16px 32px rgba(0,0,0,.37);
+    }
+
+    .btn-ghost{
+      background:rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.6);
+      color:#fffbf9;
+      backdrop-filter:blur(8px);
+    }
+    .btn-ghost:hover{
+      background:rgba(255,255,255,.35);
+      color:#b02323;
+    }
+
+    .hint{
+      font-size:.78rem;
+      color:#f3dede;
+      margin-top:6px;
+    }
+
+    /* right side */
+    .right-card{
+      background:#fffdfc;
+      border-radius:22px;
+      padding:18px 18px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      box-shadow:0 18px 40px rgba(0,0,0,.16);
+    }
+
+    .right-title{
+      font-size:.98rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      color:#b02323;
+    }
+
+    .right-sub{
+      font-size:.8rem;
+      color:#777;
+      line-height:1.5;
+    }
+
+    .photo-frame{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      background:#000;
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .photo-frame img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .photo-caption{
+      font-size:.78rem;
+      color:#999;
+      margin-top:4px;
+    }
+
+    /* modal */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:5;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+    }
+    .modal-backdrop.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .modal{
+      background:#fffdfb;
+      border-radius:22px;
+      max-width:560px;
+      width:94%;
+      padding:24px 24px 22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.55);
+      animation:pop .25s ease-out;
+    }
+    @keyframes pop{
+      from{transform:scale(.93) translateY(8px);opacity:0}
+      to{transform:scale(1) translateY(0);opacity:1}
+    }
+
+    .modal h2{
+      font-size:1.4rem;
+      margin-bottom:10px;
+    }
+    .modal p{
+      font-size:.96rem;
+      color:#444;
+      line-height:1.7;
+      margin-bottom:8px;
+    }
+    .modal .close-row{
+      display:flex;
+      justify-content:flex-end;
+      margin-top:10px;
+    }
+    .btn-small{
+      padding:7px 16px;
+      font-size:.85rem;
+      border-radius:999px;
+      border:none;
+      background:#222;
+      color:#fff;
+      cursor:pointer;
+    }
+    .btn-small:hover{background:#000}
+
+    @media(max-width:880px){
+      .card{
+        grid-template-columns:1fr;
+        padding:26px 22px 24px;
+      }
+      .badge-bar{
+        top:-46px;
+        padding:9px 18px;
+        font-size:.82rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="bgPhoto"></div>
+  <div id="confetti"></div>
 
-<div id="bgPhoto"></div>
-<div class="overlay"></div>
+  <div class="card">
+    <div class="badge-bar">
+      <span class="badge-dot"></span>
+      Happy Birthday, Esha! 🎉
+    </div>
 
-<div class="card">
-  <div>
-    <div class="title">Happy Birthday, Angelina (Esha) 🎂</div>
-    <div class="subtitle">A tiny corner of the internet made just for you — from Spandan 💛</div>
-    <p class="msg">
-      I know it’s just a simple page on a screen… but I wanted <b>one place</b> that’s only about you, your smile, and this day.
-    </p>
-    <p class="msg">
-      When you’re ready, tap the button below. I hope it makes your day a little softer, a little warmer, and a lot more “you”.
-    </p>
+    <section class="left">
+      <h1>Happy Birthday, <span>Angelina (Esha)</span>! 🎂</h1>
+      <p class="tagline">
+        A tiny corner of the internet made just for you — from Spandan 💛
+      </p>
 
-    <button class="btn btn-main" onclick="openSurprise()">Open your surprise 💝</button>
-    <button class="btn btn-ghost" onclick="copyDM()">Copy a cute DM 💌</button>
+      <p>
+        I know it’s just a simple page on a screen… but I wanted
+        <span class="strong"> one place</span> that’s only about
+        you, your smile, and this day.
+      </p>
+      <p>
+        When you’re ready, tap the button below. I hope it makes your day
+        a little softer, a little warmer, and a lot more “you”.
+      </p>
 
-    <p style="font-size:13px;color:#777;margin-top:10px;">
-      (Turn your sound on — there’s a little something playing for you 🎧)
-    </p>
+      <div class="actions">
+        <button class="btn btn-main" id="openSurprise">
+          Open your surprise ✨
+        </button>
+        <button class="btn btn-ghost" id="copyDM">
+          Copy a cute DM 💌
+        </button>
+      </div>
+
+      <p class="hint">
+        (Turn your sound on — there’s a little something playing for you 🎧)
+      </p>
+    </section>
+
+    <section class="right-card">
+      <div class="right-title">
+        Angelina’s photo 📸
+      </div>
+      <p class="right-sub">
+        Couldn’t not put this here. It’s one of my favourite versions of you. ✨
+      </p>
+
+      <div class="photo-frame">
+        <img id="thumbPhoto" alt="Angelina (Esha)" />
+      </div>
+      <p class="photo-caption">
+        From: Spandan — also blurred in the background when your surprise is open.
+      </p>
+    </section>
   </div>
 
-  <div class="thumb-wrap">
-    <img id="photoThumb" class="thumb" src="" alt="Angelina's photo">
-    <div class="thumb-caption">
-      Couldn’t not put this here. It’s kind of my favourite version of you. ✨
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <h2>Hey, birthday girl 💫</h2>
+      <p>
+        I don’t know if words ever do you justice, but I’ll still try.
+        You make things softer just by being in them. This little page is
+        my way of saying I notice that, I appreciate that, and I’m quietly
+        cheering for you — always.
+      </p>
+      <p>
+        Here’s to more late-night laughs, random songs, and memories that feel
+        like this background looks — a little dramatic, a lot warm,
+        and entirely yours. 💌
+      </p>
+      <p>
+        Keep this link for the days you forget how special you are.
+        I’ll be here, in one tiny tab of your browser, reminding you. 🫶
+      </p>
+
+      <div class="close-row">
+        <button class="btn-small" id="closeModal">Close</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- popup -->
-<div id="popupBackdrop" class="popup-backdrop">
-  <div class="popup">
-    <h2>🎉 Happy Birthday, pretty heart ❤️</h2>
-    <p>
-      I don’t know how to say this without sounding cheesy, so I’ll just say it:
-    </p>
-    <p>
-      <b>You make things better just by existing in them.</b>
-    </p>
-    <p>
-      I hope today treats you gently, just the way you deserve.  
-      And if it doesn’t, I hope this tiny page at least made you smile for a second.
-    </p>
-    <p style="margin-top:8px;font-weight:700;">
-      — Spandan 💛
-    </p>
-    <button class="btn btn-main" style="margin-top:12px;" onclick="closeSurprise()">Close ✨</button>
-  </div>
-</div>
+  <!-- audio -->
+  <audio id="bgMusic" loop></audio>
 
-<audio id="bgMusic" preload="auto"></audio>
+  <script>
+    /* your media links */
+    const PHOTO_BG   = "https://github.com/killeres07/angelina-bday/blob/main/Esha1.jpg?raw=true";
+    const PHOTO_THUMB= "https://github.com/killeres07/angelina-bday/blob/main/Esha2.jpg?raw=true";
+    const SONG       = "https://github.com/killeres07/angelina-bday/raw/main/Humdum__Aditya_Rikhari__Karaoke_With_Lyrics__Sallo_Beats__iMibEHC7HOI.mp3";
 
-<script>
-/* ---------------------------------------------------------
-   🔥 EDIT ONLY THESE 3 LINES WITH YOUR REAL LINKS
-   (keep the quotes " " and replace the inside)
---------------------------------------------------------- */
-const PHOTO_BG   = "https://github.com/killeres07/angelina-bday/blob/main/Esha1.jpg?raw=true";
-const PHOTO_THUMB= "https://github.com/killeres07/angelina-bday/blob/main/Esha2.jpg?raw=true";
-const SONG       = "https://github.com/killeres07/angelina-bday/raw/refs/heads/main/humdum.mp3
-";
-/* ----------------------------------------------------- */
+    const bgPhoto   = document.getElementById("bgPhoto");
+    const thumbImg  = document.getElementById("thumbPhoto");
+    const openBtn   = document.getElementById("openSurprise");
+    const copyBtn   = document.getElementById("copyDM");
+    const modal     = document.getElementById("modal");
+    const closeBtn  = document.getElementById("closeModal");
+    const confettiC = document.getElementById("confetti");
+    const music     = document.getElementById("bgMusic");
 
-// set background and thumb
-document.getElementById("bgPhoto").style.backgroundImage = `url("${PHOTO_BG}")`;
-document.getElementById("photoThumb").src = PHOTO_THUMB;
+    // set images + music src
+    bgPhoto.style.backgroundImage = `url("${PHOTO_BG}")`;
+    thumbImg.src = PHOTO_THUMB;
+    music.src = SONG;
 
-// set music
-const music = document.getElementById("bgMusic");
-music.src = SONG;
-music.loop = true;
+    function makeConfetti(){
+      for(let i=0;i<60;i++){
+        const c=document.createElement("div");
+        c.className="confetto";
+        const colors=["#ffb357","#ff7b5b","#ffd4e3","#fff07f","#ff8a5c"];
+        c.style.background=colors[i%colors.length];
+        c.style.setProperty("--x",Math.random()*100+"vw");
+        c.style.animationDelay=(Math.random()*0.4)+"s";
+        confettiC.appendChild(c);
+        setTimeout(()=>c.remove(),3000);
+      }
+    }
 
-function openSurprise(){
-  // try to play music (may need user interaction)
-  music.play().catch(()=>{ /* if blocked, user can tap again */ });
-  document.getElementById("popupBackdrop").style.display = "flex";
-}
+    function openSurprise(){
+      modal.classList.add("show");
+      bgPhoto.classList.add("on");
+      makeConfetti();
+      // try to play music (user-gesture, so allowed)
+      music.play().catch(()=>{});
+    }
 
-function closeSurprise(){
-  document.getElementById("popupBackdrop").style.display = "none";
-}
+    function closeSurprise(){
+      modal.classList.remove("show");
+      bgPhoto.classList.remove("on");
+    }
 
-function copyDM(){
-  const link = `https://${location.host}${location.pathname}`;
-  const text = `Happy Birthday, Angelina 💛 I made a tiny something just for you: ${link} \nOpen it when you feel like smiling. — Spandan`;
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>{
-      alert("DM copied. Just paste it in chat 💌");
-    }).catch(()=>{
-      prompt("Copy this message:", text);
+    openBtn.addEventListener("click", openSurprise);
+    closeBtn.addEventListener("click", closeSurprise);
+    modal.addEventListener("click", e=>{
+      if(e.target===modal) closeSurprise();
     });
-  } else {
-    prompt("Copy this message:", text);
-  }
-}
-</script>
 
+    copyBtn.addEventListener("click", async ()=>{
+      const text = `I made you a tiny birthday website. Open it when you need a soft reminder that someone is really, really fond of you. 💌`;
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Cute DM copied! Paste it in her chat. 💬");
+      }catch(err){
+        alert("Couldn't copy automatically, but here it is:\n\n"+text);
+      }
+    });
+  </script>
 </body>
 </html>
-
