@@ -7,12 +7,8 @@
 
   <style>
     :root{
-      --deep-red1:#3b0005;
-      --deep-red2:#8b0010;
       --accent1:#ffb357;
       --accent2:#ff8a5c;
-      --card:#ffffff;
-      --muted:#a7a7a7;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -21,7 +17,10 @@
       min-height:100vh;
       margin:0;
       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top, var(--deep-red2), var(--deep-red1));
+
+      /* REMOVE RED BACKGROUND */
+      background:#000;
+
       display:flex;
       align-items:center;
       justify-content:center;
@@ -30,21 +29,20 @@
       overflow:hidden;
     }
 
+    /* full background photo no darkness */
     #bgPhoto{
       position:fixed;
       inset:0;
       background-size:cover;
       background-position:center;
-      filter:blur(10px) brightness(.7);
-      opacity:.18;
+      opacity:0.4;           /* makes background soft */
+      filter:blur(4px);
       z-index:0;
-      transform:scale(1.05);
-      transition:opacity .6s ease, filter .6s ease;
     }
 
     #bgPhoto.on {
-      opacity:.32;
-      filter:blur(6px) brightness(.85);
+      opacity:0.7;
+      filter:blur(2px);
     }
 
     #confetti{
@@ -70,14 +68,15 @@
     .card{
       position:relative;
       z-index:1;
-      max-width:1050px;
+      max-width:980px;
       width:100%;
-      background:linear-gradient(145deg,#ffffff,#fff7f4);
+      background:rgba(255,255,255,0.87);
+      backdrop-filter:blur(6px);
       box-shadow:0 26px 60px rgba(0,0,0,.38);
       border-radius:26px;
       padding:32px 34px;
       display:grid;
-      grid-template-columns: minmax(0,2.1fr) minmax(0,2fr);
+      grid-template-columns: minmax(0,1.8fr) minmax(0,1.5fr);
       gap:32px;
     }
 
@@ -96,15 +95,6 @@
       align-items:center;
       gap:8px;
       box-shadow:0 14px 40px rgba(0,0,0,.45);
-      letter-spacing:.02em;
-    }
-
-    .badge-dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:#fffbf5;
-      box-shadow:0 0 0 4px rgba(255,255,255,.35);
     }
 
     .left h1{
@@ -117,25 +107,14 @@
 
     .left .tagline{
       font-size:.9rem;
-      color:#666;
+      color:#444;
       margin-bottom:22px;
     }
 
-    .left p{
-      font-size:.98rem;
-      line-height:1.7;
-      color:#333;
-      margin-bottom:15px;
-    }
-
-    .left p span.strong{font-weight:600;color:#111}
-
     .actions{
       display:flex;
-      flex-wrap:wrap;
       gap:12px;
       margin-top:14px;
-      margin-bottom:4px;
     }
 
     .btn{
@@ -149,251 +128,82 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      letter-spacing:.01em;
-      transition:transform .12s ease, box-shadow .12s ease, background .2s ease;
+      transition:0.2s;
     }
 
     .btn-main{
       background:linear-gradient(135deg,#ff7b5b,#ffb457);
       color:#fff;
-      box-shadow:0 12px 24px rgba(0,0,0,.3);
-    }
-    .btn-main:hover{
-      transform:translateY(-1px);
-      box-shadow:0 16px 32px rgba(0,0,0,.37);
     }
 
     .btn-ghost{
-      background:rgba(255,255,255,.2);
-      border:1px solid rgba(255,255,255,.6);
-      color:#fffbf9;
-      backdrop-filter:blur(8px);
-    }
-    .btn-ghost:hover{
-      background:rgba(255,255,255,.35);
-      color:#b02323;
-    }
-
-    .hint{
-      font-size:.78rem;
-      color:#f3dede;
-      margin-top:6px;
+      background:#fff;
+      border:1px solid #ccc;
+      color:#444;
     }
 
     .right-card{
-      background:#fffdfc;
-      border-radius:22px;
-      padding:18px 18px 20px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      box-shadow:0 18px 40px rgba(0,0,0,.16);
-    }
-
-    .right-title{
-      font-size:.98rem;
-      font-weight:600;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      color:#b02323;
-    }
-
-    .right-sub{
-      font-size:.8rem;
-      color:#777;
-      line-height:1.5;
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 12px 35px rgba(0,0,0,.18);
     }
 
     .photo-frame{
-      position:relative;
-      border-radius:18px;
+      border-radius:14px;
       overflow:hidden;
-      background:#000;
-      flex:1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     }
-
     .photo-frame img{
       width:100%;
-      height:100%;
-      object-fit:cover;
+      height:auto;
       display:block;
-    }
-
-    .photo-caption{
-      font-size:.78rem;
-      color:#999;
-      margin-top:4px;
-    }
-
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.72);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:5;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .25s ease;
-    }
-    .modal-backdrop.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .modal{
-      background:#fffdfb;
-      border-radius:22px;
-      max-width:560px;
-      width:94%;
-      padding:24px 24px 22px;
-      box-shadow:0 20px 60px rgba(0,0,0,.55);
-      animation:pop .25s ease-out;
-    }
-    @keyframes pop{
-      from{transform:scale(.93) translateY(8px);opacity:0}
-      to{transform:scale(1) translateY(0);opacity:1}
-    }
-
-    .modal h2{
-      font-size:1.4rem;
-      margin-bottom:10px;
-    }
-    .modal p{
-      font-size:.96rem;
-      color:#444;
-      line-height:1.7;
-      margin-bottom:8px;
-    }
-    .modal .close-row{
-      display:flex;
-      justify-content:flex-end;
-      margin-top:10px;
-    }
-    .btn-small{
-      padding:7px 16px;
-      font-size:.85rem;
-      border-radius:999px;
-      border:none;
-      background:#222;
-      color:#fff;
-      cursor:pointer;
-    }
-    .btn-small:hover{background:#000}
-
-    @media(max-width:880px){
-      .card{
-        grid-template-columns:1fr;
-        padding:26px 22px 24px;
-      }
-      .badge-bar{
-        top:-46px;
-        padding:9px 18px;
-        font-size:.82rem;
-      }
     }
   </style>
 </head>
+
 <body>
   <div id="bgPhoto"></div>
   <div id="confetti"></div>
 
   <div class="card">
-    <div class="badge-bar">
-      <span class="badge-dot"></span>
-      Happy Birthday, Esha! 🎉
-    </div>
+
+    <div class="badge-bar">Happy Birthday, Esha! 🎉</div>
 
     <section class="left">
       <h1>Happy Birthday, <span>Angelina (Esha)</span>! 🎂</h1>
-      <p class="tagline">
-        A tiny corner of the internet made just for you — from Spandan 💛
-      </p>
+      <p class="tagline">A tiny corner of the internet made just for you — from Spandan 💛</p>
 
-      <p>
-        I know it’s just a simple page on a screen… but I wanted
-        <span class="strong"> one place</span> that’s only about
-        you, your smile, and this day.
-      </p>
-      <p>
-        When you’re ready, tap the button below. I hope it makes your day
-        a little softer, a little warmer, and a lot more “you”.
-      </p>
+      <p>I wanted one place on the internet that’s just about you.</p>
+      <p>Tap the button when you're ready — something small is waiting for you.</p>
 
       <div class="actions">
-        <button class="btn btn-main" id="openSurprise">
-          Open your surprise ✨
-        </button>
-        <button class="btn btn-ghost" id="copyDM">
-          Copy a cute DM 💌
-        </button>
+        <button class="btn btn-main" id="openSurprise">Open your surprise ✨</button>
+        <button class="btn btn-ghost" id="copyDM">Copy a cute DM 💌</button>
       </div>
-
-      <p class="hint">
-        (Turn your sound on — there’s a little something playing for you 🎧)
-      </p>
     </section>
 
     <section class="right-card">
-      <div class="right-title">
-        Angelina’s photo 📸
-      </div>
-      <p class="right-sub">
-        Couldn’t not put this here. It’s one of my favourite versions of you. ✨
-      </p>
-
       <div class="photo-frame">
-        <img id="thumbPhoto" alt="Angelina (Esha)" />
+        <img id="thumbPhoto" />
       </div>
-      <p class="photo-caption">
-        From: Spandan — also blurred in the background when your surprise is open.
-      </p>
     </section>
-  </div>
 
-  <div class="modal-backdrop" id="modal">
-    <div class="modal">
-      <h2>Hey, birthday girl 💫</h2>
-      <p>
-        I don’t know if words ever do you justice, but I’ll still try.
-        You make things softer just by being in them. This little page is
-        my way of saying I notice that, I appreciate that, and I’m quietly
-        cheering for you — always.
-      </p>
-      <p>
-        Here’s to more late-night laughs, random songs, and memories that feel
-        like this background looks — a little dramatic, a lot warm,
-        and entirely yours. 💌
-      </p>
-      <p>
-        Keep this link for the days you forget how special you are.
-        I’ll be here, in one tiny tab of your browser, reminding you. 🫶
-      </p>
-
-      <div class="close-row">
-        <button class="btn-small" id="closeModal">Close</button>
-      </div>
-    </div>
   </div>
 
   <audio id="bgMusic" loop></audio>
 
-  <script>
+<script>
     const PHOTO_BG   = "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Esha1.jpg";
     const PHOTO_THUMB= "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Esha2.jpg";
-    const SONG       = "https://raw.githubusercontent.com/killeres07/angelina-bday/main/Humdum__Aditya_Rikhari__Karaoke_With_Lyrics__Sallo_Beats__iMibEHC7HOI.mp3";
+
+    /* IMPORTANT — rename MP3 to song.mp3 */
+    const SONG       = "https://raw.githubusercontent.com/killeres07/angelina-bday/main/song.mp3";
 
     const bgPhoto   = document.getElementById("bgPhoto");
     const thumbImg  = document.getElementById("thumbPhoto");
     const openBtn   = document.getElementById("openSurprise");
     const copyBtn   = document.getElementById("copyDM");
     const modal     = document.getElementById("modal");
-    const closeBtn  = document.getElementById("closeModal");
     const confettiC = document.getElementById("confetti");
     const music     = document.getElementById("bgMusic");
 
@@ -402,7 +212,7 @@
     music.src = SONG;
 
     function makeConfetti(){
-      for(let i=0;i<60;i++){
+      for(let i=0;i<50;i++){
         const c=document.createElement("div");
         c.className="confetto";
         const colors=["#ffb357","#ff7b5b","#ffd4e3","#fff07f","#ff8a5c"];
@@ -414,33 +224,18 @@
       }
     }
 
-    function openSurprise(){
-      modal.classList.add("show");
+    openBtn.addEventListener("click", ()=>{
       bgPhoto.classList.add("on");
       makeConfetti();
       music.play().catch(()=>{});
-    }
-
-    function closeSurprise(){
-      modal.classList.remove("show");
-      bgPhoto.classList.remove("on");
-    }
-
-    openBtn.addEventListener("click", openSurprise);
-    closeBtn.addEventListener("click", closeSurprise);
-    modal.addEventListener("click", e=>{
-      if(e.target===modal) closeSurprise();
     });
 
     copyBtn.addEventListener("click", async ()=>{
-      const text = `I made you a tiny birthday website. Open it when you need a soft reminder that someone is really, really fond of you. 💌`;
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("Cute DM copied! Paste it in her chat. 💬");
-      }catch(err){
-        alert("Couldn't copy automatically, but here it is:\n\n"+text);
-      }
+      const text = "I made you a small birthday website. Open it when you feel like smiling 💌";
+      await navigator.clipboard.writeText(text);
+      alert("DM copied!");
     });
-  </script>
+</script>
+
 </body>
 </html>
